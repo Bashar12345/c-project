@@ -1,0 +1,381 @@
+#include<stdio.h>
+#include<string.h>
+#include <windows.h>
+int main()
+{
+    int n;
+    gotoxy(75,5);
+    printf("''WELCOME TO MUBARAK BANK''");
+    gotoxy(60,8);
+    printf("OUR BANK IS THE BEST SERVICE PROVIDER IN BANGLADESH");
+    gotoxy(45,10);
+    printf("choose your option");
+    gotoxy(50,12);
+    printf("1.register yourself");
+    gotoxy(50,14);
+    printf("2.login ");
+    gotoxy(50,16);
+    printf("3.Admin");
+    gotoxy(50,18);
+    printf("4.exit");
+    gotoxy(45,20);
+    scanf("%d",&n);
+    if(n==1)
+    {
+        system("cls");
+        registration();
+    }
+    else if (n==2)
+    {
+        system("cls");
+        login();
+    }
+    else if(n==3)
+    {
+        system("cls");
+        admin();
+
+    }
+    else if (n==4)
+    {
+        exit(0);
+    }
+    else
+    {
+        system("cls");
+        gotoxy(75,30);
+        printf("wrong input!!!!!!!!!!!!");
+    }
+}
+int login()
+{
+    int n,c=0,b=0;
+    float t,taka=0;
+    char username[25],user[25],usern[25],password[10],pass[10],pin[10],pi[10];
+    SYSTEMTIME wtime;
+    GetSystemTime(&wtime);
+    gotoxy(140,2);
+    printf("%d/%d/%d",wtime.wDay,wtime.wMonth,wtime.wYear);
+    gotoxy(55,5);
+    printf("Thanks for using our bank");
+    gotoxy(30,7);
+    printf("Enter your username :: ");
+    gotoxy(80,7);
+    scanf("%s",username);
+    gotoxy(30,9);
+    printf("Enter your password :: ");
+    gotoxy(80,9);
+    scanf("%s",password);
+    FILE *p;
+    p=fopen("password.txt","r");
+    while(fscanf(p,"%s %s",user,pass)!=EOF)
+    {
+        if(strcmp(user,username)==0 && strcmp(pass,password)==0)
+        {
+            gotoxy(60,15);
+            printf(" You have successfully logged in ");
+            c=1;
+            getch();
+        }
+    }
+    fclose(p);
+    if(c==1)
+    {
+        system("cls");
+        gotoxy(45,10);
+        printf("Enter your choice");
+        gotoxy(55,12);
+        printf("1.balance check");
+        gotoxy(55,14);
+        printf("2.balance deposit");
+        gotoxy(55,16);
+        printf("3.balance withdraw");
+        gotoxy(55,18);
+        printf("4.Exit");
+        gotoxy(55,20);
+        scanf("%d",&n);
+        if(n==1)                                     //balance check
+        {
+            system("cls");
+            gotoxy(25,5);
+            printf("Enter the username ");
+            gotoxy(75,5);
+            scanf("%s",username);
+            p=fopen("balance.txt","r+");
+            while(fscanf(p,"%s %f %d %d %d",user,&taka,&wtime.wDay,&wtime.wMonth,&wtime.wYear)!=EOF)
+            {
+                if(strcmp(user,username)==0)
+                {
+                    gotoxy(75,18);
+                    printf("Username :: %s ",user);
+                    gotoxy(75,22);
+                    printf(" Your balance ::%.2f tk",taka);
+                    gotoxy(0,30);
+                }
+            }
+
+            fclose(p);
+            getch();
+            system("cls");
+
+            main();
+
+        }
+        else if (n==2)                               //balance deposit
+        {
+            system("cls");
+            gotoxy(140,2);
+            printf("%d/%d/%d",wtime.wDay,wtime.wMonth,wtime.wYear);
+            gotoxy(75,5);
+            printf("Balance deposit");
+            gotoxy(25,7);
+            printf("Enter the UserName ");
+            gotoxy(75,7);
+            scanf("%s",username);
+            gotoxy(25,9);
+            printf("Enter the PIN ");
+            gotoxy(75,9);
+            scanf("%s",pin);
+            p=fopen("pin.txt","r");
+            while(fscanf(p,"%s %s",user,pi)!=EOF)
+            {
+                if(strcmp(username,user)==0 && strcmp(pin,pi)==0)
+                {
+                    gotoxy(75,10);
+                    printf(" you successfully access you account to keep deposit ");
+                    b=1;
+                }
+                else
+                {
+                    system("cls");
+                    gotoxy(75,15);
+                    printf("There are no account available in this username \n\n\n\n\n\n\n\n\n\n");
+                }
+                getch();
+            }
+            fclose(p);
+            p=fopen("balance.txt","r");
+            while(fscanf(p,"%s %f %d %d %d",username,&taka,&wtime.wDay,&wtime.wMonth,&wtime.wYear)!=EOF)
+            {
+                if(strcmp(username,user)==0)
+                {
+                    gotoxy(75,12);
+                    printf("Username %s :: %.2ftk  Date:  %d /%d/ %d",user,taka,wtime.wDay,wtime.wMonth,wtime.wYear);
+                }
+            }
+            fclose(p);
+            if(b==1)
+            {
+                p=fopen("balance.txt","w+");
+                gotoxy(45,14);
+                printf("Enter the amount you want to deposit ");
+                gotoxy(45,16);
+                scanf("%f",&t);
+                gotoxy(0,25);
+                taka=taka+t;
+                fprintf(p,"%s %.2f  %d %d %d\n",username,taka,wtime.wDay,wtime.wMonth,wtime.wYear);
+                fclose(p);
+                p=fopen("balance.txt","a");
+                fclose(p);
+                system("cls");
+            }
+            main();
+        }
+        else if(n==3)                                 //balance withdraw
+        {
+            system("cls");
+            gotoxy(75,5);
+            printf("Balance withdraw");
+            gotoxy(140,2);
+            printf("%d/%d/%d ",wtime.wDay,wtime.wMonth,wtime.wYear);
+            gotoxy(25,7);
+            printf("Enter the username ");
+            scanf("%s",username);
+            p=fopen("balance.txt","r");
+            while(fscanf(p,"%s %f %d %d %d",username,&taka,&wtime.wDay,&wtime.wMonth,&wtime.wYear)!=EOF)
+            {
+                if(strcmp(username,user)==0)
+                {
+                    gotoxy(75,10);
+                    printf("Username %s ::%.2ftk",user,taka);
+                }
+            }
+            fclose(p);
+            p=fopen("balance.txt","w+");
+            gotoxy(45,12);
+            printf("Enter the amount you want to Withdraw");
+            gotoxy(45,14);
+            scanf("%f",&t);
+            taka=taka-t;
+            fprintf(p,"%s %.2f  %d %d %d",username,taka,wtime.wDay,wtime.wMonth,wtime.wYear);
+            fclose(p);
+            getch();
+            system("cls");
+            main();
+        }
+        else if(n==4)
+        {
+            main();
+        }
+        else
+        {
+            system("cls");
+            gotoxy(75,15);
+            printf("Wrong input!!!!!!!!!!!!!!!!!!\n\n\n\n\n\n");
+        }
+    }
+    else
+    {
+        system("cls");
+        gotoxy(75,15);
+        printf("Wrong Username and password!!!!!\n please enter correctly\n\n\n\n\n\n");
+    }
+
+}
+
+int registration()
+{
+    int count=0,n;
+    char username[25],password[10],user[25],pass[10],fname[50],mname[50],addres[500],work[1000],pin[4];
+    FILE *p;
+    p=fopen("password.txt","a");
+    fclose(p);
+    p=fopen("password.txt","r");
+    gotoxy(35,5);
+    printf("Enter the username :");
+    gotoxy(85,5);
+    scanf("%s",username);
+    gotoxy(35,7);
+    printf("Enter the password");
+    gotoxy(85,7);
+    scanf("%s",password);
+    while (fscanf(p,"%s %s",user,pass)!=EOF)
+    {
+        if(strcmp(username,user)==0 && strcmp(password,pass)==0)
+        {
+            system("cls");
+            gotoxy(75,25);
+            printf("Already registered!!!!!!!!!!!!!!!!!!!!!!");
+            count=1;
+        }
+    }
+    fclose(p);
+    if(count==0)
+    {
+        system("cls");
+        p=fopen("user_record.txt","a");
+        gotoxy(45,5);
+        printf("Enter your father name (Please, dont use space or comma in that section,use '.')");
+        gotoxy(45,7);
+        scanf("%s",fname);
+        gotoxy(45,9);
+        printf("Enter your mother name (Please, dont use space or comma in that section,use '.')");
+        gotoxy(45,11);
+        scanf("%s",mname);
+        gotoxy(45,13);
+        printf("Enter your address (Please, dont use space or comma in that section,use '.')");
+        gotoxy(45,15);
+        scanf("%s",addres);
+        gotoxy(45,17);
+        printf("Enter your working place (Please, dont use space or comma in that section,use '.')");
+        gotoxy(45,19);
+        scanf("%s",work);
+        fprintf(p,"%s %s %s %s %s",username,fname,mname,addres,work);
+        fclose(p);
+        p=fopen("password.txt","a");
+        fprintf(p,"%s %s",username,password);
+        fclose(p);
+        gotoxy(45,21);
+        printf("Enter the pin number");
+        gotoxy(45,23);
+        scanf("%s",pin);
+        p=fopen("pin.txt","a");
+        fprintf(p,"%s %s",username,pin);
+        fclose(p);
+        gotoxy(55,25);
+        printf("Your account registered successfully\n\n\n\n\n\n ");
+
+    }
+    system("cls");
+    main();
+}
+
+int admin()
+{
+    int a='y',c=0;
+    char username[25],user[10]="admin",usern[25],password[10],pass[10]="1234";
+    char fname[50],mname[50],addres[500],work[1000];
+    gotoxy(45,3);
+    printf("Enter the code");
+    gotoxy(45,4);
+    scanf("%s",username);
+    gotoxy(45,5);
+    printf("Password");
+    gotoxy(45,6);
+    scanf("%s",password);
+    if(strcmp(username,user)==0 && strcmp(password,pass)==0)
+    {
+        system("cls");
+        gotoxy(75,8);
+        printf("Welcome admin");
+        c=1;
+    }
+    else
+    {
+        system("cls");
+        gotoxy(75,15);
+        printf("You dont know the password u cant access into admin panel\n\n\n\n\n\n");
+    }
+    if(c==1)
+    {
+        gotoxy(65,8);
+        printf("Welcome admin what do you want");
+        gotoxy(65,10);
+        printf("Enter the user name u want to check the information");
+        gotoxy(65,12);
+        scanf("%s",username);
+        FILE *p;
+        p=fopen("user_record.txt","r");
+        while(fscanf(p,"%s %s %s %s %s\n",usern,fname,mname,addres,work)!=EOF)
+        {
+            if(strcmp(usern,username)==0)
+            {
+                gotoxy(55,16);
+                printf("Your searching username %s",usern);
+                gotoxy(10,18);
+                printf("Father name :: %s",fname);
+                gotoxy(10,20);
+                printf("Mother name :: %s",mname);
+                gotoxy(10,22);
+                printf("Adress of the User :: %s",addres);
+                gotoxy(10,24);
+                printf("Working place of the user :: %s",work);
+            }
+        }
+        fclose(p);
+        getch();
+
+    }
+    system("cls");
+    main();
+
+}
+
+
+
+void gotoxy(int x, int y)
+{
+    COORD coord= {0,0};
+    coord.X = x;
+    coord.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coord);
+}
+
+
+
+
+
+
+
+
+
